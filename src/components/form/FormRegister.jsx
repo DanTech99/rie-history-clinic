@@ -2,6 +2,10 @@
 
 export default function FormRegister() {
   return (
-    <div>FormRegister</div>
+    <>
+    <form action="">
+      
+    </form>
+    </>
   )
 }
