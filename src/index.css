@@ -1,0 +1,10 @@
+/* tailwindscss.com/docs/installation */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.nav {
+  margin-left: 10px;
+  cursor: pointer;
+}
