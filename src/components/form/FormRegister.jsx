@@ -28,20 +28,23 @@ export default function FormRegister() {
         label="ODONTOLOGO" 
         variant="filled" 
         multiline 
-        defaultValue="Marcos Sanches Jaraba" 
+        defaultValue="Marcos Sanches Jaraba"
+        name='odontologo' 
       />
 
       <TextField 
         id="outlined-multiline-static" 
         label="PACIENTE" 
-        variant="filled" 
+        variant="filled"
+        name='paciente' 
       />
 
       <div className='flex  flex-row'>
         <div className='w-80 mr-5'>
         <TextField 
           id="standard-number" 
-          label="Fecha de inicio de tratamiento" 
+          label="Fecha de inicio de tratamiento"
+          name='fechatratamiento' 
           type='date'
           InputLabelProps={{
             shrink: true,
@@ -61,6 +64,7 @@ export default function FormRegister() {
           }}
           variant="filled"
           className='w-full'
+          name='edad'
         />
         </div>
       </div>
@@ -71,6 +75,7 @@ export default function FormRegister() {
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
+          name='nucleofamiliar'
         >
           <MenuItem value={1}>SI</MenuItem>
           <MenuItem value={2}>NO</MenuItem>
@@ -83,7 +88,8 @@ export default function FormRegister() {
       <TextField 
         id="outlined-multiline-static" 
         label="ESTADO GENERAL" 
-        variant="filled" 
+        variant="filled"
+        name='estadogeneral' 
       />
 
       <h1 className='text-xl mt-5'>ANTECEDENTES INDIVIDUALES</h1>
@@ -101,6 +107,7 @@ export default function FormRegister() {
           }}
           variant="filled"
           className='w-80'
+          name='nacimiento'
         />
 
         </div>
@@ -110,6 +117,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='parto'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -123,6 +131,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='enfermedadescronicas'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -136,6 +145,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='alteracionescongenitas'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -149,6 +159,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='traumatismos'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -158,10 +169,11 @@ export default function FormRegister() {
 
         <div className='mt-5' >
           <FormControl variant="filled"  className='w-80 '>
-            <InputLabel id="demo-simple-select-filled-label">Traumatismos:</InputLabel>
+            <InputLabel id="demo-simple-select-filled-label">Intervenciones quirúrgicas:</InputLabel>
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='intervencionesquirurgicas'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -175,6 +187,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='tratamientoprevio'
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -188,6 +201,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='uso'
             >
               <MenuItem value={1}>chupete</MenuItem>
               <MenuItem value={2}>mamadera</MenuItem>
@@ -197,11 +211,14 @@ export default function FormRegister() {
           </FormControl>
         </div>
 
+      
+
         <div className='mt-5' >
         <TextField 
           id="standard-number" 
           label="Hasta que edad" 
           type='number'
+          name='hastaqueedad'
           InputLabelProps={{
             shrink: true,
           }}
@@ -210,6 +227,16 @@ export default function FormRegister() {
         />
         </div>
       </div>
+
+      <TextField
+          id="filled-textarea"
+          label="OBSERVACIONES"
+          placeholder="Placeholder"
+          multiline
+          variant="filled"
+          rows={4}
+          name='observaciones'
+      />
 
 
       <h1 className='text-xl mt-10'>ANALISIS FACIAL</h1>
@@ -222,6 +249,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='patronfacial'
             >
               <MenuItem value={1}>Mesofacial</MenuItem>
               <MenuItem value={2}>Dólico facial</MenuItem>
@@ -238,6 +266,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='perfil'
             >
               <MenuItem value={1}>Recto</MenuItem>
               <MenuItem value={2}>Cóncavo</MenuItem>
@@ -253,6 +282,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='asimetria'
             >
               <MenuItem value={1}>Mand. Derecha</MenuItem>
               <MenuItem value={2}>Mand. Izquierda</MenuItem>
@@ -268,6 +298,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='alturafacial'
             >
               <MenuItem value={1}>Equilibrada</MenuItem>
               <MenuItem value={2}>Larga</MenuItem>
@@ -282,6 +313,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='anchofacial'
             >
               <MenuItem value={1}>Equilibrada</MenuItem>
               <MenuItem value={2}>Estrecho</MenuItem>
@@ -296,6 +328,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='perfilmaxilar'
             >
               <MenuItem value={1}>Ortognático</MenuItem>
               <MenuItem value={2}>Prognático</MenuItem>
@@ -311,6 +344,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='perfilmandibular'
             >
               <MenuItem value={1}>Ortognático</MenuItem>
               <MenuItem value={2}>Prognático</MenuItem>
@@ -325,6 +359,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='surcolabiomenton'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Marcado</MenuItem>
@@ -339,6 +374,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='labiosenreposo'
             >
               <MenuItem value={1}>Compotentes</MenuItem>
               <MenuItem value={2}>Incompetentes</MenuItem>
@@ -353,6 +389,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='perfillabial'
             >
               <MenuItem value={1}>Protrusivo Sup</MenuItem>
               <MenuItem value={2}>Protrusivo Inf</MenuItem>
@@ -376,6 +413,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='respiracion'
             >
               <MenuItem value={1}>Bucal</MenuItem>
               <MenuItem value={2}>Nasal</MenuItem>
@@ -392,6 +430,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='actividadcomisural'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Contraccion</MenuItem>
@@ -406,6 +445,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='actividadlingual'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Interp. Anterior</MenuItem>
@@ -420,6 +460,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='labiosuperior'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
@@ -435,6 +476,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='labioinferior'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
@@ -449,6 +491,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='masetero'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
@@ -463,6 +506,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='mentoniano'
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
@@ -477,6 +521,7 @@ export default function FormRegister() {
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
+              name='habitosdesuccion'
             >
               <MenuItem value={1}>Dedos</MenuItem>
               <MenuItem value={2}>Lengua</MenuItem>
@@ -494,6 +539,7 @@ export default function FormRegister() {
           multiline
           variant="filled"
           rows={4}
+          name='plantratamiento'
       />
 
       <TextField
@@ -503,6 +549,7 @@ export default function FormRegister() {
           multiline
           variant="filled"
           rows={4}
+          name='tecnicaaparato'
       />
        <TextField
           id="filled-textarea"
@@ -511,6 +558,7 @@ export default function FormRegister() {
           multiline
           variant="filled"
           rows={4}
+          name='tiempoestimadotratamiento'
       />
       <TextField
           id="filled-textarea"
@@ -519,6 +567,7 @@ export default function FormRegister() {
           multiline
           variant="filled"
           rows={4}
+          name='pronostico'
       />
 
 
