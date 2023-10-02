@@ -1,10 +1,14 @@
 import Layout from "../layouts/Layout"
+import FormRegister from "../components/form/FormRegister"
 
 function Form() {
   return (
     <>
     <Layout>
-      <h1>Home</h1>
+      <main className="p-5 justify-center items-center content-center">
+      <FormRegister />
+      </main>
+     
     </Layout> 
     </>
   )

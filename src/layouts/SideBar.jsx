@@ -5,7 +5,7 @@ import {Link} from 'wouter'
 function SideBar() {
   return (
     <>
-    <aside className="border p-5 container-fluid w-full h-screen">
+    <aside className="border p-5 container-fluid w-full h-screen scroll-">
       <header className="flex justify-center items-center content-center p-4  ]">
         <div className='border border-[#236768] rounded-full p-1'>
           <img src={LogoRie} alt="" className='w-full' />
