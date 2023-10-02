@@ -3,7 +3,7 @@ import LogoRie from '../assets/logo-rie.png'
 
 function HeaderNav() {
   return (
-    <nav className="flex justify-between items-center content-center p-5 bg-green-700 text-white ">
+    <nav className="flex justify-between items-center content-center p-3 bg-[#50a1a5] text-white ">
     <div className="flex justify-between items-center content-center">
       <Link to="/" className="text-2xl nav">
         <img src={LogoRie} alt="" className='w-12' />
@@ -11,7 +11,7 @@ function HeaderNav() {
       <Link to="/" className="text-2xl  nav">Rie Odontologia</Link>
     </div>
     <div className="flex flex-col"> 
-      <a href="/" className="text-xl  py-2">Dr Marcos Sanches Jaraba</a>
+    <Link to="/" className="text-2xl  nav">Dr Marcos Sanches Jaraba</Link>
     </div>
   </nav>
   )
