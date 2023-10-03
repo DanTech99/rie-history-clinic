@@ -1,10 +1,10 @@
 import {useState} from 'react'
+import FormRegister from './FormRegister';
 
 function FormApp() {
 
-  const [dataForm, setDataForm] = useState([])
-
-  const [datos, setDataForm] = useState({
+  const [lastId, setLastId] = useState(0);
+  const [data, setData] = useState({
     odontologo: '',
     paciente: '',
     fechatratamiento: '',
@@ -45,6 +45,7 @@ function FormApp() {
     pronostico: '',
 
   })
+  const [jsonData, setJsonData] = useState('');
 
   /* manejar el cambio de valores de entrada del formulario */
   const handleInputChange = (event) => {
@@ -52,23 +53,21 @@ function FormApp() {
 
     const {name, value} = event.target
 
-    setDataForm({
-      ...dataForm,
+    setData({
+      ...data,
       [name]: value
     })
+
+    // Convierte data a JSON y lo almacena en jsonData
+  setJsonData(JSON.stringify(data, null, 2));
   }
 
-  /**
-   * guardar los datos en el array de objetos
-   */
 
-  const saveData = (event) => {
 
-    
-  }
+  
 
   return (
-    <div>FormApp</div>
+    <FormRegister handleInputChange={handleInputChange} data={data} jsonData={jsonData} />
   )
 }
 

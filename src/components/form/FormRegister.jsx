@@ -6,13 +6,182 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import {useState} from 'react'
 export default function FormRegister() {
+
+  const [data, setData] = useState({
+    odontologo: '',
+    paciente: '',
+    fechatratamiento: '',
+    edad: '',
+    nucleofamiliar: '',
+    estadogeneral: '',
+    nacimiento: '',
+    parto: '',
+    enfermedadescronicas: '',
+    alteracionescongenitas: '',
+    traumatismos: '',
+    intervencionesquirurgicas: '',
+    tratamientoprevio: '',
+    uso: '',
+    hastaqueedad: '',
+    observaciones: '',
+    patronfacial: '',
+    perfil: '',
+    asimetria: '',
+    alturafacial: '',
+    anchofacial: '',
+    perfilmaxilar: '',
+    perfilmandibular: '',
+    surcolabiomenton: '',
+    labiosenreposo: '',
+    perfillabial: '',
+    respiracion:'',
+    actividadcomisural: '',
+    actividadlingual: '',
+    labiosuperior: '',
+    labioinferior: '',
+    masetero: '',
+    mentoniano: '',
+    habitosdesuccion: '',
+    plantratamiento: '',
+    tecnicaaparato: '',
+    tiempoestimadotratamiento: '',
+    pronostico: '',
+
+  })
+  const [lastId, setLastId] = useState(0);
+
+  /* manejar el cambio de valores de entrada del formulario */
+  const handleInputChange = (event) => {
+    event.preventDefault()
+
+    let {name, value} = event.target
+    // Verifica si el elemento es un campo de selección
+  if (event.target.tagName === "SELECT") {
+    // El valor de un campo de selección se encuentra en event.target.value
+    value = event.target.value;
+  }
+
+    setData(prevData => (
+      { ...prevData, 
+        [name]: value 
+      }))
+
+    // Convierte data a JSON y lo almacena en jsonData
+  }
+
+  const saveData = async (event) => {
+    event.preventDefault()
+
+    const newId = lastId + 1
+
+    const newData = {
+      ...data,
+      id: newId,
+
+    }
+    setLastId(newId)
+
+    setData(newData)
+    const res = await fetch('http://localhost:3001/generatehistoryclinic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(data)
+      })
+      if (res.ok) {
+        // descargar el pdf
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'historiaclinica.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+
+    console.log(data)
+
+    // limpiar el formulario
+    setData({
+      odontologo: '',
+      paciente: '',
+      fechatratamiento: '',
+      edad: '',
+      nucleofamiliar: '',
+      estadogeneral: '',
+      nacimiento: '',
+      parto: '',
+      enfermedadescronicas: '',
+      alteracionescongenitas: '',
+      traumatismos: '',
+      intervencionesquirurgicas: '',
+      tratamientoprevio: '',
+      uso: '',
+      hastaqueedad: '',
+      observaciones: '',
+      patronfacial: '',
+      perfil: '',
+      asimetria: '',
+      alturafacial: '',
+      anchofacial: '',
+      perfilmaxilar: '',
+      perfilmandibular: '',
+      surcolabiomenton: '',
+      labiosenreposo: '',
+      perfillabial: '',
+      respiracion:'',
+      actividadcomisural: '',
+      actividadlingual: '',
+      labiosuperior: '',
+      labioinferior: '',
+      masetero: '',
+      mentoniano: '',
+      habitosdesuccion: '',
+      plantratamiento: '',
+      tecnicaaparato: '',
+      tiempoestimadotratamiento: '',
+      pronostico: '',
+    })
+  }
+
+    // enviar los datos al servidor
+    const handleFormSubmit = async (event) => {
+      event.preventDefault()
+      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      if (res.ok) {
+        // descargar el pdf
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'historiaclinica.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+    }
+
+    
+
+
+
   return (
     <>
     <header className='p-2 text-center'>
       <h1 className='text-2xl'> Formulario Para Generar Historias Clinicas</h1>
     </header>
+
     <main>
       <Box
       component="form"
@@ -28,15 +197,22 @@ export default function FormRegister() {
         label="ODONTOLOGO" 
         variant="filled" 
         multiline 
-        defaultValue="Marcos Sanches Jaraba"
-        name='odontologo' 
+        
+        name='odontologo'
+        onChange={handleInputChange}
+        value={data.odontologo}
+        
+        
       />
 
       <TextField 
         id="outlined-multiline-static" 
         label="PACIENTE" 
         variant="filled"
-        name='paciente' 
+        name='paciente'
+        onChange={handleInputChange}
+        value={data.paciente}
+        
       />
 
       <div className='flex  flex-row'>
@@ -51,6 +227,9 @@ export default function FormRegister() {
           }}
           variant="filled"
           className='w-full'
+          onChange={handleInputChange}
+          value={data.fechatratamiento}
+          
         />
 
         </div>
@@ -65,6 +244,9 @@ export default function FormRegister() {
           variant="filled"
           className='w-full'
           name='edad'
+          onChange={handleInputChange}
+          value={data.edad}
+          
         />
         </div>
       </div>
@@ -76,9 +258,13 @@ export default function FormRegister() {
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
           name='nucleofamiliar'
+          onChange={handleInputChange}
+          value={data.nucleofamiliar}
+          
+          
         >
-          <MenuItem value={1}>SI</MenuItem>
-          <MenuItem value={2}>NO</MenuItem>
+          <MenuItem value="si">SI</MenuItem>
+          <MenuItem value="no">NO</MenuItem>
         </Select>
       </FormControl>
    
@@ -89,7 +275,10 @@ export default function FormRegister() {
         id="outlined-multiline-static" 
         label="ESTADO GENERAL" 
         variant="filled"
-        name='estadogeneral' 
+        name='estadogeneral'
+        onChange={handleInputChange}
+        value={data.estadogeneral}
+         
       />
 
       <h1 className='text-xl mt-5'>ANTECEDENTES INDIVIDUALES</h1>
@@ -108,6 +297,8 @@ export default function FormRegister() {
           variant="filled"
           className='w-80'
           name='nacimiento'
+          onChange={handleInputChange}
+          value={data.nacimiento}
         />
 
         </div>
@@ -118,6 +309,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='parto'
+              onChange={handleInputChange}
+              value={data.parto}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -132,6 +325,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='enfermedadescronicas'
+              onChange={handleInputChange}
+              value={data.enfermedadescronicas}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -146,6 +341,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='alteracionescongenitas'
+              onChange={handleInputChange}
+              value={data.alteracionescongenitas}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -160,6 +357,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='traumatismos'
+              onChange={handleInputChange}
+              value={data.traumatismos}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -174,6 +373,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='intervencionesquirurgicas'
+              onChange={handleInputChange}
+              value={data.intervencionesquirurgicas}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -188,6 +389,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='tratamientoprevio'
+              onChange={handleInputChange}
+              value={data.tratamientoprevio}
             >
               <MenuItem value={1}>SI</MenuItem>
               <MenuItem value={2}>NO</MenuItem>
@@ -202,6 +405,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='uso'
+              onChange={handleInputChange}
+              value={data.uso}
             >
               <MenuItem value={1}>chupete</MenuItem>
               <MenuItem value={2}>mamadera</MenuItem>
@@ -224,6 +429,8 @@ export default function FormRegister() {
           }}
           variant="filled"
           className='w-80 '
+          onChange={handleInputChange}
+          value={data.hastaqueedad}
         />
         </div>
       </div>
@@ -236,6 +443,9 @@ export default function FormRegister() {
           variant="filled"
           rows={4}
           name='observaciones'
+          onChange={handleInputChange}
+          value={data.observaciones}
+
       />
 
 
@@ -250,6 +460,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='patronfacial'
+              onChange={handleInputChange}
+              value={data.patronfacial}
             >
               <MenuItem value={1}>Mesofacial</MenuItem>
               <MenuItem value={2}>Dólico facial</MenuItem>
@@ -267,6 +479,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='perfil'
+              onChange={handleInputChange}
+              value={data.perfil}
             >
               <MenuItem value={1}>Recto</MenuItem>
               <MenuItem value={2}>Cóncavo</MenuItem>
@@ -283,6 +497,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='asimetria'
+              onChange={handleInputChange}
+              value={data.asimetria}
             >
               <MenuItem value={1}>Mand. Derecha</MenuItem>
               <MenuItem value={2}>Mand. Izquierda</MenuItem>
@@ -299,6 +515,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='alturafacial'
+              onChange={handleInputChange}
+              value={data.alturafacial}
             >
               <MenuItem value={1}>Equilibrada</MenuItem>
               <MenuItem value={2}>Larga</MenuItem>
@@ -314,6 +532,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='anchofacial'
+              onChange={handleInputChange}
+              value={data.anchofacial}
             >
               <MenuItem value={1}>Equilibrada</MenuItem>
               <MenuItem value={2}>Estrecho</MenuItem>
@@ -329,6 +549,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='perfilmaxilar'
+              onChange={handleInputChange}
+              value={data.perfilmaxilar}
             >
               <MenuItem value={1}>Ortognático</MenuItem>
               <MenuItem value={2}>Prognático</MenuItem>
@@ -345,6 +567,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='perfilmandibular'
+              onChange={handleInputChange}
+              value={data.perfilmandibular}
             >
               <MenuItem value={1}>Ortognático</MenuItem>
               <MenuItem value={2}>Prognático</MenuItem>
@@ -360,6 +584,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='surcolabiomenton'
+              onChange={handleInputChange}
+              value={data.surcolabiomenton}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Marcado</MenuItem>
@@ -375,6 +601,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='labiosenreposo'
+              onChange={handleInputChange}
+              value={data.labiosenreposo}
             >
               <MenuItem value={1}>Compotentes</MenuItem>
               <MenuItem value={2}>Incompetentes</MenuItem>
@@ -390,11 +618,13 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='perfillabial'
+              onChange={handleInputChange}
+              value={data.perfillabial}
             >
               <MenuItem value={1}>Protrusivo Sup</MenuItem>
               <MenuItem value={2}>Protrusivo Inf</MenuItem>
-              <MenuItem value={2}>Retrusivos Sup</MenuItem>
-              <MenuItem value={2}>Retrusivos Inf</MenuItem>
+              <MenuItem value={3}>Retrusivos Sup</MenuItem>
+              <MenuItem value={4}>Retrusivos Inf</MenuItem>
 
               
             </Select>
@@ -414,12 +644,14 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='respiracion'
+              onChange={handleInputChange}
+              value={data.respiracion}
             >
               <MenuItem value={1}>Bucal</MenuItem>
               <MenuItem value={2}>Nasal</MenuItem>
-              <MenuItem value={2}>Mixta</MenuItem>
-              <MenuItem value={2}>Deglucion Normal</MenuItem>
-              <MenuItem value={2}>Deglucion Atipica</MenuItem>
+              <MenuItem value={3}>Mixta</MenuItem>
+              <MenuItem value={4}>Deglucion Normal</MenuItem>
+              <MenuItem value={5}>Deglucion Atipica</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -431,6 +663,8 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='actividadcomisural'
+              onChange={handleInputChange}
+              value={data.actividadcomisural}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Contraccion</MenuItem>
@@ -446,10 +680,12 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='actividadlingual'
+              onChange={handleInputChange}
+              value={data.actividadlingual}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Interp. Anterior</MenuItem>
-              <MenuItem value={2}>Interp. Lateral</MenuItem>
+              <MenuItem value={3}>Interp. Lateral</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -461,10 +697,12 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='labiosuperior'
+              onChange={handleInputChange}
+              value={data.labiosuperior}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={2}>Hiperactivo</MenuItem>
+              <MenuItem value={3}>Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -477,10 +715,12 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='labioinferior'
+              onChange={handleInputChange}
+              value={data.labioinferior}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={2}>Hiperactivo</MenuItem>
+              <MenuItem value={3}>Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -492,10 +732,12 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='masetero'
+              onChange={handleInputChange}
+              value={data.masetero}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={2}>Hiperactivo</MenuItem>
+              <MenuItem value={3}>Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -507,10 +749,12 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='mentoniano'
+              onChange={handleInputChange}
+              value={data.mentoniano}
             >
               <MenuItem value={1}>Normal</MenuItem>
               <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={2}>Hiperactivo</MenuItem>
+              <MenuItem value={3}>Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -522,11 +766,13 @@ export default function FormRegister() {
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
               name='habitosdesuccion'
+              onChange={handleInputChange}
+              value={data.habitosdesuccion}
             >
               <MenuItem value={1}>Dedos</MenuItem>
               <MenuItem value={2}>Lengua</MenuItem>
-              <MenuItem value={2}>Labios</MenuItem>
-              <MenuItem value={2}>Onicofagia</MenuItem>
+              <MenuItem value={3}>Labios</MenuItem>
+              <MenuItem value={4}>Onicofagia</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -540,6 +786,8 @@ export default function FormRegister() {
           variant="filled"
           rows={4}
           name='plantratamiento'
+          onChange={handleInputChange}
+          value={data.plantratamiento}
       />
 
       <TextField
@@ -550,6 +798,8 @@ export default function FormRegister() {
           variant="filled"
           rows={4}
           name='tecnicaaparato'
+          onChange={handleInputChange}
+          value={data.tecnicaaparato}
       />
        <TextField
           id="filled-textarea"
@@ -559,6 +809,8 @@ export default function FormRegister() {
           variant="filled"
           rows={4}
           name='tiempoestimadotratamiento'
+          onChange={handleInputChange}
+          value={data.tiempoestimadotratamiento}
       />
       <TextField
           id="filled-textarea"
@@ -568,11 +820,19 @@ export default function FormRegister() {
           variant="filled"
           rows={4}
           name='pronostico'
+          onChange={handleInputChange}
+          value={data.pronostico}
+
       />
+
+      <div className='flex'>
+        <button type="submit" onClick={saveData} className='p-5 bg-blue-400'>Guardar datos</button>
+        <button type="submit" onClick={handleFormSubmit} className='p-5 bg-blue-400'>Generar Pdf</button>
+      </div>
 
 
       </Box>
-  
+   
     </main>
     
     </> 
