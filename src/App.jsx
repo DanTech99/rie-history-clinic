@@ -1,6 +1,6 @@
 import './index.css'
 import {Route} from 'wouter';
-import home from './pages/home';
+import Home from './pages/Home';
 import Form from './pages/Form';
 import ListRegister from './pages/ListRegister';
 import { AppProvider } from './contexts/AppContext';
@@ -9,7 +9,7 @@ function App() {
   return (
     <>
     <AppProvider>
-      <Route path="/" component={home} />
+      <Route path="/" component={Home} />
       <Route path="/form" component={Form} />
       <Route path="/list" component={ListRegister} />
     </AppProvider>
