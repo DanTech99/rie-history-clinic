@@ -1,180 +1,16 @@
-
+import { useContext } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import {useState} from 'react'
+import Select from '@mui/material/Select'
+import { AppContext } from '../../contexts/AppContext';
+
 export default function FormRegister() {
 
-  const [data, setData] = useState({
-    odontologo: '',
-    paciente: '',
-    fechatratamiento: '',
-    edad: '',
-    nucleofamiliar: '',
-    estadogeneral: '',
-    nacimiento: '',
-    parto: '',
-    enfermedadescronicas: '',
-    alteracionescongenitas: '',
-    traumatismos: '',
-    intervencionesquirurgicas: '',
-    tratamientoprevio: '',
-    uso: '',
-    hastaqueedad: '',
-    observaciones: '',
-    patronfacial: '',
-    perfil: '',
-    asimetria: '',
-    alturafacial: '',
-    anchofacial: '',
-    perfilmaxilar: '',
-    perfilmandibular: '',
-    surcolabiomenton: '',
-    labiosenreposo: '',
-    perfillabial: '',
-    respiracion:'',
-    actividadcomisural: '',
-    actividadlingual: '',
-    labiosuperior: '',
-    labioinferior: '',
-    masetero: '',
-    mentoniano: '',
-    habitosdesuccion: '',
-    plantratamiento: '',
-    tecnicaaparato: '',
-    tiempoestimadotratamiento: '',
-    pronostico: '',
-
-  })
-  const [lastId, setLastId] = useState(0);
-
-  /* manejar el cambio de valores de entrada del formulario */
-  const handleInputChange = (event) => {
-    event.preventDefault()
-
-    let {name, value} = event.target
-    // Verifica si el elemento es un campo de selección
-  if (event.target.tagName === "SELECT") {
-    // El valor de un campo de selección se encuentra en event.target.value
-    value = event.target.value;
-  }
-
-    setData(prevData => (
-      { ...prevData, 
-        [name]: value 
-      }))
-
-    // Convierte data a JSON y lo almacena en jsonData
-  }
-
-  const saveData = async (event) => {
-    event.preventDefault()
-
-    const newId = lastId + 1
-
-    const newData = {
-      ...data,
-      id: newId,
-
-    }
-    setLastId(newId)
-
-    setData(newData)
-    const res = await fetch('http://localhost:3001/generatehistoryclinic', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(data)
-      })
-      if (res.ok) {
-        // descargar el pdf
-        const blob = await res.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'historiaclinica.pdf'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-
-    console.log(data)
-
-    // limpiar el formulario
-    setData({
-      odontologo: '',
-      paciente: '',
-      fechatratamiento: '',
-      edad: '',
-      nucleofamiliar: '',
-      estadogeneral: '',
-      nacimiento: '',
-      parto: '',
-      enfermedadescronicas: '',
-      alteracionescongenitas: '',
-      traumatismos: '',
-      intervencionesquirurgicas: '',
-      tratamientoprevio: '',
-      uso: '',
-      hastaqueedad: '',
-      observaciones: '',
-      patronfacial: '',
-      perfil: '',
-      asimetria: '',
-      alturafacial: '',
-      anchofacial: '',
-      perfilmaxilar: '',
-      perfilmandibular: '',
-      surcolabiomenton: '',
-      labiosenreposo: '',
-      perfillabial: '',
-      respiracion:'',
-      actividadcomisural: '',
-      actividadlingual: '',
-      labiosuperior: '',
-      labioinferior: '',
-      masetero: '',
-      mentoniano: '',
-      habitosdesuccion: '',
-      plantratamiento: '',
-      tecnicaaparato: '',
-      tiempoestimadotratamiento: '',
-      pronostico: '',
-    })
-  }
-
-    // enviar los datos al servidor
-    const handleFormSubmit = async (event) => {
-      event.preventDefault()
-      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      if (res.ok) {
-        // descargar el pdf
-        const blob = await res.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'historiaclinica.pdf'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-    }
-
-    
-
-
+  const { data, handleInputChange, saveData, handleFormSubmit} = useContext(AppContext)
 
   return (
     <>
@@ -263,8 +99,8 @@ export default function FormRegister() {
           
           
         >
-          <MenuItem value="si">SI</MenuItem>
-          <MenuItem value="no">NO</MenuItem>
+          <MenuItem value="SI">SI</MenuItem>
+          <MenuItem value="NO">NO</MenuItem>
         </Select>
       </FormControl>
    
@@ -312,8 +148,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.parto}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -328,8 +164,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.enfermedadescronicas}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
 
@@ -344,8 +180,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.alteracionescongenitas}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -360,8 +196,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.traumatismos}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -376,8 +212,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.intervencionesquirurgicas}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -392,8 +228,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.tratamientoprevio}
             >
-              <MenuItem value={1}>SI</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -408,10 +244,10 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.uso}
             >
-              <MenuItem value={1}>chupete</MenuItem>
-              <MenuItem value={2}>mamadera</MenuItem>
-              <MenuItem value={2}>lactancia</MenuItem>
-              <MenuItem value={2}>NO</MenuItem>
+              <MenuItem value="chupete">chupete</MenuItem>
+              <MenuItem value="mamadera">mamadera</MenuItem>
+              <MenuItem value="lactancia">lactancia</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -463,9 +299,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.patronfacial}
             >
-              <MenuItem value={1}>Mesofacial</MenuItem>
-              <MenuItem value={2}>Dólico facial</MenuItem>
-              <MenuItem value={3}>Braquifacial</MenuItem>
+              <MenuItem value="Mesofacial">Mesofacial</MenuItem>
+              <MenuItem value="Dólico facial">Dólico facial</MenuItem>
+              <MenuItem value="Braquifacial">Braquifacial</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -482,9 +318,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.perfil}
             >
-              <MenuItem value={1}>Recto</MenuItem>
-              <MenuItem value={2}>Cóncavo</MenuItem>
-              <MenuItem value={3}>Convexo</MenuItem>
+              <MenuItem value="Recto">Recto</MenuItem>
+              <MenuItem value="Cóncavo">Cóncavo</MenuItem>
+              <MenuItem value="Convexo">Convexo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -500,9 +336,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.asimetria}
             >
-              <MenuItem value={1}>Mand. Derecha</MenuItem>
-              <MenuItem value={2}>Mand. Izquierda</MenuItem>
-              <MenuItem value={3}>Otras</MenuItem>
+              <MenuItem value="Mand. Derecha">Mand. Derecha</MenuItem>
+              <MenuItem value="Mand. Izquierda">Mand. Izquierda</MenuItem>
+              <MenuItem value="Otras">Otras</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -518,9 +354,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.alturafacial}
             >
-              <MenuItem value={1}>Equilibrada</MenuItem>
-              <MenuItem value={2}>Larga</MenuItem>
-              <MenuItem value={3}>Corta</MenuItem>
+              <MenuItem value="Equilibradas">Equilibrada</MenuItem>
+              <MenuItem value="Larga">Larga</MenuItem>
+              <MenuItem value="Corta">Corta</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -535,9 +371,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.anchofacial}
             >
-              <MenuItem value={1}>Equilibrada</MenuItem>
-              <MenuItem value={2}>Estrecho</MenuItem>
-              <MenuItem value={3}>Amplio</MenuItem>
+              <MenuItem value="Equilibrada">Equilibrada</MenuItem>
+              <MenuItem value="Estrecho">Estrecho</MenuItem>
+              <MenuItem value="Amplio">Amplio</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -552,9 +388,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.perfilmaxilar}
             >
-              <MenuItem value={1}>Ortognático</MenuItem>
-              <MenuItem value={2}>Prognático</MenuItem>
-              <MenuItem value={3}>Retrognático</MenuItem>
+              <MenuItem value="Ortognático">Ortognático</MenuItem>
+              <MenuItem value="Prognático">Prognático</MenuItem>
+              <MenuItem value="Retrognático">Retrognático</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -570,9 +406,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.perfilmandibular}
             >
-              <MenuItem value={1}>Ortognático</MenuItem>
-              <MenuItem value={2}>Prognático</MenuItem>
-              <MenuItem value={3}>Retrognático</MenuItem>
+              <MenuItem value="Ortognático">Ortognático</MenuItem>
+              <MenuItem value="Prognático">Prognático</MenuItem>
+              <MenuItem value="Retrognático">Retrognático</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -587,9 +423,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.surcolabiomenton}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Marcado</MenuItem>
-              <MenuItem value={3}>Borrado</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Marcado">Marcado</MenuItem>
+              <MenuItem value="Borrado">Borrado</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -604,8 +440,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.labiosenreposo}
             >
-              <MenuItem value={1}>Compotentes</MenuItem>
-              <MenuItem value={2}>Incompetentes</MenuItem>
+              <MenuItem value="Compotentes">Compotentes</MenuItem>
+              <MenuItem value="Incompetentes">Incompetentes</MenuItem>
               
             </Select>
           </FormControl>
@@ -621,10 +457,10 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.perfillabial}
             >
-              <MenuItem value={1}>Protrusivo Sup</MenuItem>
-              <MenuItem value={2}>Protrusivo Inf</MenuItem>
-              <MenuItem value={3}>Retrusivos Sup</MenuItem>
-              <MenuItem value={4}>Retrusivos Inf</MenuItem>
+              <MenuItem value="Protrusivo Sup">Protrusivo Sup</MenuItem>
+              <MenuItem value="Protrusivo Inf">Protrusivo Inf</MenuItem>
+              <MenuItem value="Retrusivos Sup">Retrusivos Sup</MenuItem>
+              <MenuItem value="Retrusivos Inf">Retrusivos Inf</MenuItem>
 
               
             </Select>
@@ -647,11 +483,11 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.respiracion}
             >
-              <MenuItem value={1}>Bucal</MenuItem>
-              <MenuItem value={2}>Nasal</MenuItem>
-              <MenuItem value={3}>Mixta</MenuItem>
-              <MenuItem value={4}>Deglucion Normal</MenuItem>
-              <MenuItem value={5}>Deglucion Atipica</MenuItem>
+              <MenuItem value="Bucal">Bucal</MenuItem>
+              <MenuItem value="Nasal">Nasal</MenuItem>
+              <MenuItem value="Mixta">Mixta</MenuItem>
+              <MenuItem value="Deglucion Normal">Deglucion Normal</MenuItem>
+              <MenuItem value="Deglucion Atipica">Deglucion Atipica</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -666,8 +502,8 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.actividadcomisural}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Contraccion</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Contraccion">Contraccion</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -683,9 +519,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.actividadlingual}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Interp. Anterior</MenuItem>
-              <MenuItem value={3}>Interp. Lateral</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Interp. Anterior">Interp. Anterior</MenuItem>
+              <MenuItem value="Interp. Lateral">Interp. Lateral</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -700,9 +536,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.labiosuperior}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={3}>Hiperactivo</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
+              <MenuItem value="Hiperactivo">Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -718,9 +554,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.labioinferior}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={3}>Hiperactivo</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
+              <MenuItem value="Hiperactivo">Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -735,9 +571,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.masetero}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={3}>Hiperactivo</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
+              <MenuItem value="Hiperactivo">Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -752,9 +588,9 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.mentoniano}
             >
-              <MenuItem value={1}>Normal</MenuItem>
-              <MenuItem value={2}>Hipoactivo</MenuItem>
-              <MenuItem value={3}>Hiperactivo</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+              <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
+              <MenuItem value="Hiperactivo">Hiperactivo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -769,10 +605,10 @@ export default function FormRegister() {
               onChange={handleInputChange}
               value={data.habitosdesuccion}
             >
-              <MenuItem value={1}>Dedos</MenuItem>
-              <MenuItem value={2}>Lengua</MenuItem>
-              <MenuItem value={3}>Labios</MenuItem>
-              <MenuItem value={4}>Onicofagia</MenuItem>
+              <MenuItem value="Dedos">Dedos</MenuItem>
+              <MenuItem value="Lengua">Lengua</MenuItem>
+              <MenuItem value="Labios">Labios</MenuItem>
+              <MenuItem value="Onicofagia">Onicofagia</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -826,13 +662,15 @@ export default function FormRegister() {
       />
 
       <div className='flex'>
-        <button type="submit" onClick={saveData} className='p-5 bg-blue-400'>Guardar datos</button>
-        <button type="submit" onClick={handleFormSubmit} className='p-5 bg-blue-400'>Generar Pdf</button>
+        <button type="submit" onClick={saveData} className='p-5 bg-blue-400 mr-5 rounded-lg'>Guardar datos</button>
+        
+        <button type="submit" onClick={handleFormSubmit} className='p-5 bg-blue-400 rounded-lg'>Generar Pdf</button>
       </div>
 
 
       </Box>
-   
+
+      
     </main>
     
     </> 

@@ -1,8 +1,10 @@
-
+import ListRegisterTable from "../components/list/ListRegisterTable"
 
 function ListRegister() {
   return (
-    <div>ListRegister</div>
+    <div>
+      <ListRegisterTable />
+    </div>
   )
 }
 
