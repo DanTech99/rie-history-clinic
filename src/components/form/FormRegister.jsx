@@ -10,7 +10,7 @@ import { AppContext } from '../../contexts/AppContext';
 
 export default function FormRegister() {
 
-  const { data, handleInputChange, saveData, handleFormSubmit} = useContext(AppContext)
+  const { data, handleInputChange, saveData, loading} = useContext(AppContext)
 
   return (
     <>
@@ -663,9 +663,13 @@ export default function FormRegister() {
       />
 
       <div className='flex'>
-        <button type="submit" onClick={saveData} className='p-5 bg-blue-400 mr-5 rounded-lg'>Guardar datos</button>
+        <button type="submit" onClick={saveData} className='p-5 bg-blue-400 mr-5 rounded-lg'>
+          {
+            !loading ? 'Guardar y generar PDF' : 'Guardando y generando el PDF...'
+          }
+        </button>
+
         
-        <button type="submit" onClick={handleFormSubmit} className='p-5 bg-blue-400 rounded-lg'>Generar Pdf</button>
       </div>
 
 

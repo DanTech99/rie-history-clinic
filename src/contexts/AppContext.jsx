@@ -47,6 +47,9 @@ export const AppProvider = ({ children }) => {
   })
   const [lastId, setLastId] = useState(0);
 
+  // esado para mostrar un mensaje de cargando
+  const [loading, setLoading] = useState(false)
+
   
   /* manejar el cambio de valores de entrada del formulario */
   const handleInputChange = (event) => {
@@ -72,6 +75,9 @@ export const AppProvider = ({ children }) => {
   const saveData = async (event) => {
     event.preventDefault()
 
+    // mensaje de cargando
+    setLoading(true)
+
     const newId = lastId + 1
 
     const newData = {
@@ -87,6 +93,29 @@ export const AppProvider = ({ children }) => {
     // guardar en localstorage
     const jsonData = JSON.stringify(newData)
     localStorage.setItem('data', jsonData)
+
+    const res = await fetch('https://generatepdf.zeabur.app/generatehistoryclinic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+      })
+      if (res.ok) {
+        // mostrar mensaje de cargando
+        setLoading(true)
+        // descargar el pdf
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'historiaclinica.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        // ocultar mensaje de cargando
+        setLoading(false)
+      }
 
 
     // limpiar el formulario
@@ -139,7 +168,7 @@ export const AppProvider = ({ children }) => {
     // enviar los datos al servidor
     const handleFormSubmit = async (event) => {
       event.preventDefault()
-      const res = await fetch('https://generatepdf.zeabur.app/generatehistoryclinic', {
+      const res = await fetch('https://server-generate-pdf-production.up.railway.app/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -166,6 +195,7 @@ export const AppProvider = ({ children }) => {
     handleInputChange,
     saveData,
     handleFormSubmit,
+    loading,
     data2
   }
 
