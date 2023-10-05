@@ -98,7 +98,7 @@ export const AppProvider = ({ children }) => {
   // consumir data del localstorage
     const data2 = JSON.parse(localStorage.getItem('data')) || []
 
-      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
+      const res = await fetch('server-generate-pdf-production.up.railway.app/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
