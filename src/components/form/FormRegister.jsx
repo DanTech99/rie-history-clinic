@@ -320,7 +320,6 @@ export default function FormRegister() {
             >
               <MenuItem value="Recto">Recto</MenuItem>
               <MenuItem value="Cóncavo">Cóncavo</MenuItem>
-              <MenuItem value="Convexo">Convexo</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -461,6 +460,8 @@ export default function FormRegister() {
               <MenuItem value="Protrusivo Inf">Protrusivo Inf</MenuItem>
               <MenuItem value="Retrusivos Sup">Retrusivos Sup</MenuItem>
               <MenuItem value="Retrusivos Inf">Retrusivos Inf</MenuItem>
+              <MenuItem value="Normal">Normal</MenuItem>
+
 
               
             </Select>

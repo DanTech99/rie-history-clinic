@@ -139,7 +139,7 @@ export const AppProvider = ({ children }) => {
     // enviar los datos al servidor
     const handleFormSubmit = async (event) => {
       event.preventDefault()
-      const res = await fetch('https://generatepdf.zeabur.app/generatehistoryclinic', {
+      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
