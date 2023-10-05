@@ -94,7 +94,11 @@ export const AppProvider = ({ children }) => {
     const jsonData = JSON.stringify(newData)
     localStorage.setItem('data', jsonData)
 
-    const res = await fetch('https://generatepdf.zeabur.app/generatehistoryclinic', {
+      // consumir lada data del localstorage
+  // consumir data del localstorage
+    const data2 = JSON.parse(localStorage.getItem('data')) || []
+
+      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -160,33 +164,9 @@ export const AppProvider = ({ children }) => {
       pronostico: '',
     })
   }
-  // consumir lada data del localstorage
-  // consumir data del localstorage
-  const data2 = JSON.parse(localStorage.getItem('data')) || []
 
 
-    // enviar los datos al servidor
-    const handleFormSubmit = async (event) => {
-      event.preventDefault()
-      const res = await fetch('https://server-generate-pdf-production.up.railway.app/generatehistoryclinic', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data2)
-      })
-      if (res.ok) {
-        // descargar el pdf
-        const blob = await res.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'historiaclinica.pdf'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-    }
+
 
 
 
@@ -194,9 +174,8 @@ export const AppProvider = ({ children }) => {
     data,
     handleInputChange,
     saveData,
-    handleFormSubmit,
     loading,
-    data2
+    
   }
 
 
