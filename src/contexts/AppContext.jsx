@@ -166,10 +166,6 @@ export const AppProvider = ({ children }) => {
   }
 
 
-
-
-
-
   const contextValue = {
     data,
     handleInputChange,

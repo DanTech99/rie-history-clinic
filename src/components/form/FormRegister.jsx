@@ -28,18 +28,22 @@ export default function FormRegister() {
       autoComplete="off"
       
     >
-      <TextField 
-        id="outlined-multiline-static" 
-        label="ODONTOLOGO" 
-        variant="filled" 
-        multiline 
-        
-        name='odontologo'
-        onChange={handleInputChange}
-        value={data.odontologo}
-        
-        
-      />
+      <FormControl variant="filled" sx={{ m: 1}}>
+        <InputLabel id="demo-simple-select-filled-label">ODONTOLOGO</InputLabel>
+        <Select
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          name='odontologo'
+          onChange={handleInputChange}
+          value={data.odontologo}
+          
+          
+        >
+          <MenuItem value="Marcos Sanches Jaraba">Marcos Sanches Jaraba</MenuItem>
+          <MenuItem value="otro">otro</MenuItem>
+
+        </Select>
+      </FormControl>
 
       <TextField 
         id="outlined-multiline-static" 
@@ -51,8 +55,8 @@ export default function FormRegister() {
         
       />
 
-      <div className='flex  flex-row'>
-        <div className='w-80 mr-5'>
+      <div className='flex  flex-row gap-4'>
+        <div className='w-full mr-5'>
         <TextField 
           id="standard-number" 
           label="Fecha de inicio de tratamiento"
@@ -69,7 +73,7 @@ export default function FormRegister() {
         />
 
         </div>
-        <div className='w-80 '>
+        <div className='w-full'>
         <TextField 
           id="standard-number" 
           label="Edad" 
@@ -85,24 +89,28 @@ export default function FormRegister() {
           
         />
         </div>
+
+        <div className='w-full flex '>
+          <FormControl variant="filled" className='w-full'>
+            <InputLabel id="demo-simple-select-filled-label">Nucleo Familiar</InputLabel>
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              name='nucleofamiliar'
+              onChange={handleInputChange}
+              value={data.nucleofamiliar}
+              
+              
+            >
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
       </div>
 
       
-        <FormControl variant="filled" sx={{ m: 1, maxWidth: 320}}>
-        <InputLabel id="demo-simple-select-filled-label">Nucleo Familiar</InputLabel>
-        <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
-          name='nucleofamiliar'
-          onChange={handleInputChange}
-          value={data.nucleofamiliar}
-          
-          
-        >
-          <MenuItem value="SI">SI</MenuItem>
-          <MenuItem value="NO">NO</MenuItem>
-        </Select>
-      </FormControl>
+        
    
 
      
