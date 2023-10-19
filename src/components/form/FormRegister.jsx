@@ -7,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select'
 import { AppContext } from '../../contexts/AppContext';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 
 export default function FormRegister() {
 
@@ -28,6 +30,8 @@ export default function FormRegister() {
       autoComplete="off"
       
     >
+      <h1 className='text-xl mt-5'>DATOS DEL PACIENTE</h1>
+      <hr />
       <FormControl variant="filled" sx={{ m: 1}}>
         <InputLabel id="demo-simple-select-filled-label">ODONTOLOGO</InputLabel>
         <Select
@@ -55,7 +59,67 @@ export default function FormRegister() {
         
       />
 
+    <TextField 
+        id="standard-number"
+        label="CONTACTO" 
+        variant="filled"
+        name='contacto'
+        onChange={handleInputChange}
+        value={data.contacto}
+        type='number'
+        
+      />
+      
+      <TextField 
+        id="standard-number" 
+        label="CEDULA" 
+        variant="filled"
+        name='cedula'
+        onChange={handleInputChange}
+        value={data.cedula}
+        type='number'
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="ACUDIENTE" 
+        variant="filled"
+        name='acudiente'
+        onChange={handleInputChange}
+        value={data.acudiente}
+        
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="OCUPACION" 
+        variant="filled"
+        name='ocupacion'
+        onChange={handleInputChange}
+        value={data.ocupacion}
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="direccion" 
+        variant="filled"
+        name='direccion'
+        onChange={handleInputChange}
+        value={data.direccion}
+        
+      />
+      <TextField 
+        id="outlined-multiline-static" 
+        label="CIUDAD" 
+        variant="filled"
+        name='ciudad'
+        onChange={handleInputChange}
+        value={data.ciudad}
+        
+      />
       <div className='flex  flex-row gap-4'>
+      
+
         <div className='w-full mr-5'>
         <TextField 
           id="standard-number" 
@@ -109,12 +173,7 @@ export default function FormRegister() {
         </div>
       </div>
 
-      
-        
-   
-
-     
-
+  
       <TextField 
         id="outlined-multiline-static" 
         label="ESTADO GENERAL" 
@@ -671,13 +730,12 @@ export default function FormRegister() {
       />
 
       <div className='flex'>
-        <button type="submit" onClick={saveData} className='p-5 bg-blue-400 mr-5 rounded-lg'>
-          {
-            !loading ? 'Guardar y generar PDF' : 'Guardando y generando el PDF...'
-          }
-        </button>
 
-        
+        <Button variant="outlined"  onClick={saveData} size='large' >
+            {
+            !loading ? 'Guardar y generar PDF' : <CircularProgress />
+          }
+        </Button>
       </div>
 
 

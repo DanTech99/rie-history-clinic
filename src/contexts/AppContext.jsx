@@ -7,6 +7,12 @@ export const AppProvider = ({ children }) => {
   const [data, setData] = useState({
     odontologo: '',
     paciente: '',
+    contacto: '',
+    cedula: '',
+    acudiente: '',
+    ocupacion: '',
+    direccion: '',
+    ciudad: '',
     fechatratamiento: '',
     edad: '',
     nucleofamiliar: '',
@@ -32,6 +38,7 @@ export const AppProvider = ({ children }) => {
     labiosenreposo: '',
     perfillabial: '',
     respiracion:'',
+    deglucion: '',
     actividadcomisural: '',
     actividadlingual: '',
     labiosuperior: '',
@@ -43,9 +50,7 @@ export const AppProvider = ({ children }) => {
     tecnicaaparato: '',
     tiempoestimadotratamiento: '',
     pronostico: '',
-
   })
-  const [lastId, setLastId] = useState(0);
 
   // esado para mostrar un mensaje de cargando
   const [loading, setLoading] = useState(false)
@@ -78,16 +83,9 @@ export const AppProvider = ({ children }) => {
     // mensaje de cargando
     setLoading(true)
 
-    const newId = lastId + 1
-
     const newData = {
       ...data,
-      id: newId,
-
     }
-    
-    setLastId(newId)
-
     setData(newData)
 
     // guardar en localstorage
@@ -126,6 +124,12 @@ export const AppProvider = ({ children }) => {
     setData({
       odontologo: '',
       paciente: '',
+      contacto: '',
+      cedula: '',
+      acudiente: '',
+      ocupacion: '',
+      direccion: '',
+      ciudad: '',
       fechatratamiento: '',
       edad: '',
       nucleofamiliar: '',
@@ -151,6 +155,7 @@ export const AppProvider = ({ children }) => {
       labiosenreposo: '',
       perfillabial: '',
       respiracion:'',
+      deglucion: '',
       actividadcomisural: '',
       actividadlingual: '',
       labiosuperior: '',
