@@ -11,7 +11,7 @@ function App() {
     <AppProvider>
       <Route path="/" component={Home} />
       <Route path="/form" component={Form} />
-      <Route path="/list" component={ListRegister} />
+      <Route path="/listado" component={ListRegister} />
     </AppProvider>
     </>
   )

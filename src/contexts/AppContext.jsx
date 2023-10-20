@@ -92,8 +92,8 @@ export const AppProvider = ({ children }) => {
     const jsonData = JSON.stringify(newData)
     localStorage.setItem('data', jsonData)
 
-      // consumir lada data del localstorage
-  // consumir data del localstorage
+    // consumir lada data del localstorage
+    // consumir data del localstorage
     const data2 = JSON.parse(localStorage.getItem('data')) || []
 
       const res = await fetch('http://localhost:3001/generatehistoryclinic', {

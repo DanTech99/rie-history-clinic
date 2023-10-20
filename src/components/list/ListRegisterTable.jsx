@@ -12,16 +12,28 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 function ListRegisterTable() {
-  const { handleFormSubmit } = useContext(AppContext);
+  const { saveData } = useContext(AppContext);
   const [data,  setData] = useState([]);
 
-  // funcio para obtener los registros de la base de datos
+  // function to save data in localStorage
+  const saveDataToLocalStorage = (data) => {
+    localStorage.setItem('data', JSON.stringify(data));
+  }
+
+  // function to get data from localStorage
+  const getDataFromLocalStorage = () => {
+    const data = localStorage.getItem('data');
+    return data ? JSON.parse(data) : [];
+  }
+
+  // function to fetch data from server
   const fetchData = async () => {
     try {
       const res = await fetch("http://localhost:3001/api/getData");
       if(res.ok) {
         const data = await res.json();
         setData(data);
+        saveDataToLocalStorage(data); // save data in localStorage
       } else {
         console.error("error al obtener los datos del servidor")
       }
@@ -30,9 +42,13 @@ function ListRegisterTable() {
     }
   }
 
-
   useEffect(() => {
-    fetchData();
+    const dataFromLocalStorage = getDataFromLocalStorage();
+    if (dataFromLocalStorage.length > 0) {
+      setData(dataFromLocalStorage);
+    } else {
+      fetchData();
+    }
   }, []);
 
   
@@ -48,6 +64,8 @@ function ListRegisterTable() {
             <TableCell align="right">Fat&nbsp;(g)</TableCell>
             <TableCell align="right">Carbs&nbsp;(g)</TableCell>
             <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell align="right">Acciones</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -63,6 +81,18 @@ function ListRegisterTable() {
               <TableCell align="right">{item.contacto}</TableCell>
               <TableCell align="right">{item.cedula}</TableCell>
               <TableCell align="right">{item.acudiente}</TableCell>
+              <TableCell align="right">
+              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" >
+                  Generar pdf
+                </button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Editar
+                </button>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  Eliminar
+                </button>
+              </TableCell>
+
             </TableRow>
           ))}
         </TableBody>

@@ -18,7 +18,7 @@ function SideBar() {
             Formulario
           </li>
           </Link>
-          <Link to="/list">
+          <Link to="/listado">
           <li className='mb-2 flex justify-center items-center content-center p-4 border border-[#236768] hover:bg-[#50A1A5]  rounded-full text-[#236768] hover:text-white cursor-pointer'>
            Listado
           </li>
