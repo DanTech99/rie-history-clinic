@@ -55,6 +55,9 @@ export const AppProvider = ({ children }) => {
   // esado para mostrar un mensaje de cargando
   const [loading, setLoading] = useState(false)
 
+  // estado para alertas
+  const [alert, setAlert] = useState(false)
+
   
   /* manejar el cambio de valores de entrada del formulario */
   const handleInputChange = (event) => {
@@ -72,11 +75,10 @@ export const AppProvider = ({ children }) => {
         [name]: value 
       }))
 
-    // Convierte data a JSON y lo almacena en jsonData
   }
 
 
-  
+  // guardar en la base de datos
   const saveData = async (event) => {
     event.preventDefault()
 
@@ -88,38 +90,22 @@ export const AppProvider = ({ children }) => {
     }
     setData(newData)
 
-    // guardar en localstorage
-    const jsonData = JSON.stringify(newData)
-    localStorage.setItem('data', jsonData)
+    const res = await fetch('http://localhost:3001/api/savehistoryclinic', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({data: data})
+    })
 
-    // consumir lada data del localstorage
-    // consumir data del localstorage
-    const data2 = JSON.parse(localStorage.getItem('data')) || []
-
-      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data2)
-      })
-      if (res.ok) {
-        // mostrar mensaje de cargando
-        setLoading(true)
-        // descargar el pdf
-        const blob = await res.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = 'historiaclinica.pdf'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        // ocultar mensaje de cargando
-        setLoading(false)
-      }
-
-
+    if (res.ok) {
+      console.log('datos guardados')
+      setLoading(false)
+    } else {
+      console.log('error al guardar los datos')
+      setAlert(true)
+      setLoading(false)
+    }
     // limpiar el formulario
     setData({
       odontologo: '',
@@ -167,15 +153,50 @@ export const AppProvider = ({ children }) => {
       tecnicaaparato: '',
       tiempoestimadotratamiento: '',
       pronostico: '',
-    })
-  }
+    })}
 
+
+  // funcion para descargar el pdf
+  const downloadPdf = async (event) => {
+    event.preventDefault()
+
+
+    const newData = {
+      ...data,
+    }
+    setData(newData)
+
+      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      if (res.ok) {
+        // mostrar mensaje de cargando
+        setLoading(true)
+        // descargar el pdf
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'historiaclinica.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        // ocultar mensaje de cargando
+        setLoading(false)
+      }
+    }
 
   const contextValue = {
     data,
     handleInputChange,
     saveData,
     loading,
+    downloadPdf,
+    alert,
     
   }
 

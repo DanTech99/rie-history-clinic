@@ -12,30 +12,36 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 function ListRegisterTable() {
-  const { saveData } = useContext(AppContext);
-  const [data,  setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
-  // function to save data in localStorage
+  // Function to save data and last update time to localStorage
   const saveDataToLocalStorage = (data) => {
     localStorage.setItem('data', JSON.stringify(data));
+    localStorage.setItem('lastUpdate', new Date().getTime());
   }
 
-  // function to get data from localStorage
+  // Function to get data from localStorage
   const getDataFromLocalStorage = () => {
-    const data = localStorage.getItem('data');
-    return data ? JSON.parse(data) : [];
+    const savedData = localStorage.getItem('data');
+    const savedLastUpdate = localStorage.getItem('lastUpdate');
+    if (savedData && savedLastUpdate) {
+      return { data: JSON.parse(savedData), lastUpdate: parseInt(savedLastUpdate) };
+    }
+    return null;
   }
 
-  // function to fetch data from server
+  // Function to fetch data from server
   const fetchData = async () => {
     try {
       const res = await fetch("http://localhost:3001/api/getData");
-      if(res.ok) {
-        const data = await res.json();
-        setData(data);
-        saveDataToLocalStorage(data); // save data in localStorage
+      if (res.ok) {
+        const newData = await res.json();
+        setData(newData);
+        setLastUpdate(new Date().getTime()); // Set last update time to current time
+        saveDataToLocalStorage(newData);
       } else {
-        console.error("error al obtener los datos del servidor")
+        console.error("Error al obtener los datos del servidor");
       }
     } catch (error) {
       console.log(error);
@@ -43,13 +49,21 @@ function ListRegisterTable() {
   }
 
   useEffect(() => {
-    const dataFromLocalStorage = getDataFromLocalStorage();
-    if (dataFromLocalStorage.length > 0) {
-      setData(dataFromLocalStorage);
-    } else {
-      fetchData();
+    const localData = getDataFromLocalStorage();
+
+    if (localData) {
+      setData(localData.data);
+      setLastUpdate(localData.lastUpdate);
+    }
+
+    const currentTime = new Date().getTime();
+    const updateThreshold = 60000; // 1 minute (adjust to your needs)
+
+    if (!localData || (currentTime - localData.lastUpdate) > updateThreshold) {
+      fetchData(); // Fetch new data if local data is missing or outdated
     }
   }, []);
+
 
   
 
@@ -59,13 +73,13 @@ function ListRegisterTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Odontologo</TableCell>
+            <TableCell align="right">Paciente</TableCell>
+            <TableCell align="right">contacto</TableCell>
+            <TableCell align="right">Cedula</TableCell>
+            <TableCell align="right">Acudiente</TableCell>
+            <TableCell align="right">Direccion</TableCell>
             <TableCell align="right">Acciones</TableCell>
-
           </TableRow>
         </TableHead>
         <TableBody>
@@ -81,6 +95,7 @@ function ListRegisterTable() {
               <TableCell align="right">{item.contacto}</TableCell>
               <TableCell align="right">{item.cedula}</TableCell>
               <TableCell align="right">{item.acudiente}</TableCell>
+              <TableCell align="right">{item.direccion}</TableCell>
               <TableCell align="right">
               <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" >
                   Generar pdf

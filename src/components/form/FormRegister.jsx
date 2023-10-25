@@ -9,10 +9,11 @@ import Select from '@mui/material/Select'
 import { AppContext } from '../../contexts/AppContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 
 export default function FormRegister() {
 
-  const { data, handleInputChange, saveData, loading} = useContext(AppContext)
+  const { data, handleInputChange, saveData, loading, alert} = useContext(AppContext)
 
   return (
     <>
@@ -49,7 +50,7 @@ export default function FormRegister() {
         </Select>
       </FormControl>
 
-      <TextField 
+      <TextField
         id="outlined-multiline-static" 
         label="PACIENTE" 
         variant="filled"
@@ -59,7 +60,7 @@ export default function FormRegister() {
         
       />
 
-    <TextField 
+    <TextField
         id="standard-number"
         label="CONTACTO" 
         variant="filled"
@@ -327,9 +328,7 @@ export default function FormRegister() {
           label="Hasta que edad" 
           type='number'
           name='hastaqueedad'
-          InputLabelProps={{
-            shrink: true,
-          }}
+          
           variant="filled"
           className='w-80 '
           onChange={handleInputChange}
@@ -726,18 +725,24 @@ export default function FormRegister() {
           name='pronostico'
           onChange={handleInputChange}
           value={data.pronostico}
+          
 
       />
 
       <div className='flex'>
 
         <Button variant="outlined"  onClick={saveData} size='large' >
-            {
+          {
             !loading ? 'Guardar y generar PDF' : <CircularProgress />
           }
         </Button>
       </div>
 
+      {/* alerta de error */}
+      {
+        alert && <Alert severity="error">Error al guardar el registro, verificar que todos los campos esten llenos</Alert>
+      }
+         
 
       </Box>
 
