@@ -58,6 +58,9 @@ export const AppProvider = ({ children }) => {
   // estado para alertas
   const [alert, setAlert] = useState(false)
 
+  // estado para editar los datos segun si id
+  const [editId, setEditId] = useState('')
+
   
   /* manejar el cambio de valores de entrada del formulario */
   const handleInputChange = (event) => {
@@ -190,6 +193,11 @@ export const AppProvider = ({ children }) => {
       }
     }
 
+    // funcionalidad para editar los datos
+     const editData = (selectId) => {
+      setEditId(selectId)
+     }
+
   const contextValue = {
     data,
     handleInputChange,
@@ -197,6 +205,7 @@ export const AppProvider = ({ children }) => {
     loading,
     downloadPdf,
     alert,
+    setEditId,
     
   }
 

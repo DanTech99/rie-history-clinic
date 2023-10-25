@@ -1,4 +1,4 @@
-import {Link} from 'wouter'
+import { Link } from 'react-router-dom'
 import LogoRie from '../assets/logo-rie.png'
 
 function HeaderNav() {

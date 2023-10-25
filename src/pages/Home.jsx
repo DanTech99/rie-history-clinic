@@ -2,7 +2,7 @@ import HeaderNav from "../layouts/HeaderNav"
 import IconForm from '../assets/icon-form.png'
 import IconRegister from '../assets/icon-register.png'
 
-import {Link} from 'wouter'
+import { Link } from 'react-router-dom'
 
 function home() {
   return (

@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Routes, Route, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
@@ -11,9 +12,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
+
 export default function FormRegister() {
 
   const { data, handleInputChange, saveData, loading, alert} = useContext(AppContext)
+
+  let { id } = useParams();
+
+  
+
+
 
   return (
     <>

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import Layout from "../../layouts/Layout";
 
@@ -14,6 +15,9 @@ import Paper from '@mui/material/Paper';
 function ListRegisterTable() {
   const [data, setData] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
+  const { setEditId } = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   // Function to save data and last update time to localStorage
   const saveDataToLocalStorage = (data) => {
@@ -65,6 +69,16 @@ function ListRegisterTable() {
   }, []);
 
 
+  // funcion para redireccionar al formulario con los datos a editar
+  const handleEdit = (id) => {
+    // guardar el id del registro a editar
+    setEditId(id)
+    
+    // redireccionar al formulario con react router dom
+    navigate(`/form/${id}`)
+  }
+
+
   
 
   return (
@@ -97,17 +111,16 @@ function ListRegisterTable() {
               <TableCell align="right">{item.acudiente}</TableCell>
               <TableCell align="right">{item.direccion}</TableCell>
               <TableCell align="right">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" >
+                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" >
                   Generar pdf
                 </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleEdit(item.id)}>
                   Editar
                 </button>
                 <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                   Eliminar
                 </button>
               </TableCell>
-
             </TableRow>
           ))}
         </TableBody>

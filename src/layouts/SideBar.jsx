@@ -1,6 +1,6 @@
 import LogoRie from '../assets/logo-rie.png'
 
-import {Link} from 'wouter'
+import { Link } from 'react-router-dom'
 
 function SideBar() {
   return (
