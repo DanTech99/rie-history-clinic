@@ -96,7 +96,7 @@ export const AppProvider = ({ children }) => {
  
 
     try {
-      const res = await fetch('http://localhost:3001/api/savehistoryclinic', {
+      const res = await fetch('https://server-generate-pdf-production.up.railway.app/api/savehistoryclinic', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -184,7 +184,7 @@ export const AppProvider = ({ children }) => {
     }
     setData(newData)
 
-      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
+      const res = await fetch('https://server-generate-pdf-production.up.railway.app/api/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
