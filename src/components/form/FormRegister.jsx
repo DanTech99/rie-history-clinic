@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Routes, Route, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
@@ -7,10 +8,20 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select'
 import { AppContext } from '../../contexts/AppContext';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+
 
 export default function FormRegister() {
 
-  const { data, handleInputChange, saveData, loading} = useContext(AppContext)
+  const { data, handleInputChange, saveData, loading, alert, clearForm} = useContext(AppContext)
+
+  let { id } = useParams();
+
+  
+
+
 
   return (
     <>
@@ -28,20 +39,26 @@ export default function FormRegister() {
       autoComplete="off"
       
     >
-      <TextField 
-        id="outlined-multiline-static" 
-        label="ODONTOLOGO" 
-        variant="filled" 
-        multiline 
-        
-        name='odontologo'
-        onChange={handleInputChange}
-        value={data.odontologo}
-        
-        
-      />
+      <h1 className='text-xl mt-5'>DATOS DEL PACIENTE</h1>
+      <hr />
+      <FormControl variant="filled" sx={{ m: 1}}>
+        <InputLabel id="demo-simple-select-filled-label">ODONTOLOGO</InputLabel>
+        <Select
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          name='odontologo'
+          onChange={handleInputChange}
+          value={data.odontologo}
+          
+          
+        >
+          <MenuItem value="Marcos Sanches Jaraba">Marcos Sanches Jaraba</MenuItem>
+          <MenuItem value="otro">otro</MenuItem>
 
-      <TextField 
+        </Select>
+      </FormControl>
+
+      <TextField
         id="outlined-multiline-static" 
         label="PACIENTE" 
         variant="filled"
@@ -51,8 +68,68 @@ export default function FormRegister() {
         
       />
 
-      <div className='flex  flex-row'>
-        <div className='w-80 mr-5'>
+    <TextField
+        id="standard-number"
+        label="CONTACTO" 
+        variant="filled"
+        name='contacto'
+        onChange={handleInputChange}
+        value={data.contacto}
+        type='number'
+        
+      />
+      
+      <TextField 
+        id="standard-number" 
+        label="CEDULA" 
+        variant="filled"
+        name='cedula'
+        onChange={handleInputChange}
+        value={data.cedula}
+        type='number'
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="ACUDIENTE" 
+        variant="filled"
+        name='acudiente'
+        onChange={handleInputChange}
+        value={data.acudiente}
+        
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="OCUPACION" 
+        variant="filled"
+        name='ocupacion'
+        onChange={handleInputChange}
+        value={data.ocupacion}
+      />
+
+      <TextField 
+        id="outlined-multiline-static" 
+        label="direccion" 
+        variant="filled"
+        name='direccion'
+        onChange={handleInputChange}
+        value={data.direccion}
+        
+      />
+      <TextField 
+        id="outlined-multiline-static" 
+        label="CIUDAD" 
+        variant="filled"
+        name='ciudad'
+        onChange={handleInputChange}
+        value={data.ciudad}
+        
+      />
+      <div className='flex  flex-row gap-4'>
+      
+
+        <div className='w-full mr-5'>
         <TextField 
           id="standard-number" 
           label="Fecha de inicio de tratamiento"
@@ -69,7 +146,7 @@ export default function FormRegister() {
         />
 
         </div>
-        <div className='w-80 '>
+        <div className='w-full'>
         <TextField 
           id="standard-number" 
           label="Edad" 
@@ -85,28 +162,27 @@ export default function FormRegister() {
           
         />
         </div>
+
+        <div className='w-full flex '>
+          <FormControl variant="filled" className='w-full'>
+            <InputLabel id="demo-simple-select-filled-label">Nucleo Familiar</InputLabel>
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              name='nucleofamiliar'
+              onChange={handleInputChange}
+              value={data.nucleofamiliar}
+              
+              
+            >
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
       </div>
 
-      
-        <FormControl variant="filled" sx={{ m: 1, maxWidth: 320}}>
-        <InputLabel id="demo-simple-select-filled-label">Nucleo Familiar</InputLabel>
-        <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
-          name='nucleofamiliar'
-          onChange={handleInputChange}
-          value={data.nucleofamiliar}
-          
-          
-        >
-          <MenuItem value="SI">SI</MenuItem>
-          <MenuItem value="NO">NO</MenuItem>
-        </Select>
-      </FormControl>
-   
-
-     
-
+  
       <TextField 
         id="outlined-multiline-static" 
         label="ESTADO GENERAL" 
@@ -260,9 +336,7 @@ export default function FormRegister() {
           label="Hasta que edad" 
           type='number'
           name='hastaqueedad'
-          InputLabelProps={{
-            shrink: true,
-          }}
+          
           variant="filled"
           className='w-80 '
           onChange={handleInputChange}
@@ -659,19 +733,27 @@ export default function FormRegister() {
           name='pronostico'
           onChange={handleInputChange}
           value={data.pronostico}
+          
 
       />
 
       <div className='flex'>
-        <button type="submit" onClick={saveData} className='p-5 bg-blue-400 mr-5 rounded-lg'>
-          {
-            !loading ? 'Guardar y generar PDF' : 'Guardando y generando el PDF...'
-          }
-        </button>
 
-        
+        <Button variant="outlined"  onClick={saveData} size='large' >
+          {
+            !loading ? 'Guardar y generar PDF' : <CircularProgress />
+          }
+        </Button>
+        <Button onClick={clearForm} variant='outlined' size='large'>
+          Limpiar Formulario
+        </Button>
       </div>
 
+      {/* alerta de error */}
+      {
+        alert && <Alert severity="error">Error al guardar el registro, verificar que todos los campos esten llenos</Alert>
+      }
+         
 
       </Box>
 

@@ -2,7 +2,7 @@ import HeaderNav from "../layouts/HeaderNav"
 import IconForm from '../assets/icon-form.png'
 import IconRegister from '../assets/icon-register.png'
 
-import {Link} from 'wouter'
+import { Link } from 'react-router-dom'
 
 function home() {
   return (
@@ -22,7 +22,7 @@ function home() {
 
       <div className="card w-80 rounded-full h-80 flex flex-col justify-between items-center content-center hover:shadow-xl border-[#50a1a5] border">
           <div className="card-body w-auto h-auto cursor-pointer">
-            <Link to="/login">
+            <Link to="/listado">
               <img src={IconRegister} alt=""  />
             </Link>
           </div>

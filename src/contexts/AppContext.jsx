@@ -7,6 +7,12 @@ export const AppProvider = ({ children }) => {
   const [data, setData] = useState({
     odontologo: '',
     paciente: '',
+    contacto: '',
+    cedula: '',
+    acudiente: '',
+    ocupacion: '',
+    direccion: '',
+    ciudad: '',
     fechatratamiento: '',
     edad: '',
     nucleofamiliar: '',
@@ -32,6 +38,7 @@ export const AppProvider = ({ children }) => {
     labiosenreposo: '',
     perfillabial: '',
     respiracion:'',
+    deglucion: '',
     actividadcomisural: '',
     actividadlingual: '',
     labiosuperior: '',
@@ -43,12 +50,16 @@ export const AppProvider = ({ children }) => {
     tecnicaaparato: '',
     tiempoestimadotratamiento: '',
     pronostico: '',
-
   })
-  const [lastId, setLastId] = useState(0);
 
   // esado para mostrar un mensaje de cargando
   const [loading, setLoading] = useState(false)
+
+  // estado para alertas
+  const [alert, setAlert] = useState(false)
+
+  // estado para editar los datos segun si id
+  const [editId, setEditId] = useState('')
 
   
   /* manejar el cambio de valores de entrada del formulario */
@@ -67,43 +78,118 @@ export const AppProvider = ({ children }) => {
         [name]: value 
       }))
 
-    // Convierte data a JSON y lo almacena en jsonData
   }
 
 
-  
+  // guardar en la base de datos
   const saveData = async (event) => {
     event.preventDefault()
 
     // mensaje de cargando
     setLoading(true)
 
-    const newId = lastId + 1
+    const newData = {
+      ...data,
+    }
+    setData(newData)
+
+ 
+
+    try {
+      const res = await fetch('http://localhost:3001/api/savehistoryclinic', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({data: data})
+    })
+
+    if (res.ok) {
+      console.log('datos guardados')
+      setLoading(false)
+    } else {
+      console.log('error al guardar los datos')
+      setAlert(true)
+      setLoading(false)
+    }
+      
+    } catch (error) {
+      console.log(error)
+      setAlert(true)
+      setLoading(false)
+    }
+    }
+
+    // clear form
+
+    const clearForm = () => {
+      setData({
+        odontologo: '',
+        paciente: '',
+        contacto: '',
+        cedula: '',
+        acudiente: '',
+        ocupacion: '',
+        direccion: '',
+        ciudad: '',
+        fechatratamiento: '',
+        edad: '',
+        nucleofamiliar: '',
+        estadogeneral: '',
+        nacimiento: '',
+        parto: '',
+        enfermedadescronicas: '',
+        alteracionescongenitas: '',
+        traumatismos: '',
+        intervencionesquirurgicas: '',
+        tratamientoprevio: '',
+        uso: '',
+        hastaqueedad: '',
+        observaciones: '',
+        patronfacial: '',
+        perfil: '',
+        asimetria: '',
+        alturafacial: '',
+        anchofacial: '',
+        perfilmaxilar: '',
+        perfilmandibular: '',
+        surcolabiomenton: '',
+        labiosenreposo: '',
+        perfillabial: '',
+        respiracion:'',
+        deglucion: '',
+        actividadcomisural: '',
+        actividadlingual: '',
+        labiosuperior: '',
+        labioinferior: '',
+        masetero: '',
+        mentoniano: '',
+        habitosdesuccion: '',
+        plantratamiento: '',
+        tecnicaaparato: '',
+        tiempoestimadotratamiento: '',
+        pronostico: '',
+      })
+    }
+    
+
+
+  // funcion para descargar el pdf
+  const downloadPdf = async (event) => {
+    event.preventDefault()
+
 
     const newData = {
       ...data,
-      id: newId,
-
     }
-    
-    setLastId(newId)
-
     setData(newData)
 
-    // guardar en localstorage
-    const jsonData = JSON.stringify(newData)
-    localStorage.setItem('data', jsonData)
-
-      // consumir lada data del localstorage
-  // consumir data del localstorage
-    const data2 = JSON.parse(localStorage.getItem('data')) || []
-
-      const res = await fetch('server-generate-pdf-production.up.railway.app/generatehistoryclinic', {
+      const res = await fetch('http://localhost:3001/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data2)
+        body: JSON.stringify(data)
       })
       if (res.ok) {
         // mostrar mensaje de cargando
@@ -119,62 +205,27 @@ export const AppProvider = ({ children }) => {
         document.body.removeChild(link)
         // ocultar mensaje de cargando
         setLoading(false)
+      } else {
+        console.log('error al descargar el pdf')
+        setAlert(true)
+        setLoading(false)
       }
+    }
 
-
-    // limpiar el formulario
-    setData({
-      odontologo: '',
-      paciente: '',
-      fechatratamiento: '',
-      edad: '',
-      nucleofamiliar: '',
-      estadogeneral: '',
-      nacimiento: '',
-      parto: '',
-      enfermedadescronicas: '',
-      alteracionescongenitas: '',
-      traumatismos: '',
-      intervencionesquirurgicas: '',
-      tratamientoprevio: '',
-      uso: '',
-      hastaqueedad: '',
-      observaciones: '',
-      patronfacial: '',
-      perfil: '',
-      asimetria: '',
-      alturafacial: '',
-      anchofacial: '',
-      perfilmaxilar: '',
-      perfilmandibular: '',
-      surcolabiomenton: '',
-      labiosenreposo: '',
-      perfillabial: '',
-      respiracion:'',
-      actividadcomisural: '',
-      actividadlingual: '',
-      labiosuperior: '',
-      labioinferior: '',
-      masetero: '',
-      mentoniano: '',
-      habitosdesuccion: '',
-      plantratamiento: '',
-      tecnicaaparato: '',
-      tiempoestimadotratamiento: '',
-      pronostico: '',
-    })
-  }
-
-
-
-
-
+    // funcionalidad para editar los datos
+     const editData = (selectId) => {
+      setEditId(selectId)
+     }
 
   const contextValue = {
     data,
     handleInputChange,
     saveData,
     loading,
+    downloadPdf,
+    alert,
+    setEditId,
+    clearForm,
     
   }
 
