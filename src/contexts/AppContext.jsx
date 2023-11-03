@@ -93,7 +93,10 @@ export const AppProvider = ({ children }) => {
     }
     setData(newData)
 
-    const res = await fetch('http://localhost:3001/api/savehistoryclinic', {
+ 
+
+    try {
+      const res = await fetch('http://localhost:3001/api/savehistoryclinic', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -106,6 +109,12 @@ export const AppProvider = ({ children }) => {
       setLoading(false)
     } else {
       console.log('error al guardar los datos')
+      setAlert(true)
+      setLoading(false)
+    }
+      
+    } catch (error) {
+      console.log(error)
       setAlert(true)
       setLoading(false)
     }
@@ -157,6 +166,7 @@ export const AppProvider = ({ children }) => {
       tiempoestimadotratamiento: '',
       pronostico: '',
     })}
+    
 
 
   // funcion para descargar el pdf
@@ -189,6 +199,10 @@ export const AppProvider = ({ children }) => {
         link.click()
         document.body.removeChild(link)
         // ocultar mensaje de cargando
+        setLoading(false)
+      } else {
+        console.log('error al descargar el pdf')
+        setAlert(true)
         setLoading(false)
       }
     }
