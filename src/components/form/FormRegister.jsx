@@ -15,7 +15,7 @@ import Alert from '@mui/material/Alert';
 
 export default function FormRegister() {
 
-  const { data, handleInputChange, saveData, loading, alert} = useContext(AppContext)
+  const { data, handleInputChange, saveData, loading, alert, clearForm} = useContext(AppContext)
 
   let { id } = useParams();
 
@@ -743,6 +743,9 @@ export default function FormRegister() {
           {
             !loading ? 'Guardar y generar PDF' : <CircularProgress />
           }
+        </Button>
+        <Button onClick={clearForm} variant='outlined' size='large'>
+          Limpiar Formulario
         </Button>
       </div>
 
