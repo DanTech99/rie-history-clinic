@@ -6,9 +6,6 @@ import { AppProvider } from './contexts/AppContext';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-
-
-
 function App() {
   return (
     <>
@@ -18,6 +15,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/form" element={<Form />} />
             <Route path="/listado" element={<ListRegister />} />
+            <Route path="/form/:id" element={<Form />} />
           </Routes>
         </BrowserRouter>
       </AppProvider>

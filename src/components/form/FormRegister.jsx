@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -11,17 +11,55 @@ import { AppContext } from '../../contexts/AppContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import { useEffect } from 'react';
 
 
 export default function FormRegister() {
 
   const { data, handleInputChange, saveData, loading, alert, clearForm} = useContext(AppContext)
 
-  let { id } = useParams();
+  let { id } = useParams(); // obtiene la ID de la url
 
-  
+  const [registerEdit, setRegisterEdit] = useState(null)
 
+  useEffect(() => {
+    // realizar una solicitud al servidor para obtener el registro con la ID
+    const getRegisterEdit = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/api/getData/${id}`)
+        if (res.ok) {
+          const data = await res.json()
+          setRegisterEdit(data)
+        } else {
+          console.error('Error al obtener los datos del servidor')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [id])
 
+  const  handleSubmitUpdate = async (e) => {
+    e.preventDefault();
+
+    // realizar una solicitud al servidor para actualizar el registro con la ID
+    if(!registerEdit) {
+      fetch(`http://localhost:3001/api/updateData/${id}`,{
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data: registerEdit}),
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        console.log('Registro actualizado')
+      })
+      .catch(error => console.log(error))
+      } 
+    }
+    
 
   return (
     <>
