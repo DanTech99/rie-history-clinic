@@ -38,7 +38,7 @@ function ListRegisterTable() {
   // Function to fetch data from server
   const fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/getData");
+      const res = await fetch("https://server-generate-pdf-production.up.railway.app/api/getData");
       if (res.ok) {
         const newData = await res.json();
         setData(newData);
