@@ -78,6 +78,7 @@ function ListRegisterTable() {
     navigate(`/form/${id}`)
   }
 
+  console.log(data);
 
   
 
