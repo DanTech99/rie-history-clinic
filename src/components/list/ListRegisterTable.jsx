@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../contexts/AppContext";
 import Layout from "../../layouts/Layout";
-
-
+import {createClient} from "@supabase/supabase-js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,62 +10,27 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+const supabase = createClient("https://wamxoygslhrofzdwditu.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhbXhveWdzbGhyb2Z6ZHdkaXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDA1OTM2MjUsImV4cCI6MjAxNjE2OTYyNX0.2btOnNHOmFqCt8JNlUwyBC44U8geD-zmUFGqZIWts1U")
 
 function ListRegisterTable() {
-  const [data, setData] = useState([]);
-  const [lastUpdate, setLastUpdate] = useState(null);
   const { setEditId } = useContext(AppContext);
+  const [pacientes, setPacientes] = useState([]);
+
+  useEffect(() => {
+    getPacientes()
+  }, [])
+
+  async function getPacientes() {
+    const {data} = await supabase.from('pacientes').select();
+    setPacientes(data)
+  }
+
+  console.log(pacientes)
+
+
 
   const navigate = useNavigate();
 
-  // Function to save data and last update time to localStorage
-  const saveDataToLocalStorage = (data) => {
-    localStorage.setItem('data', JSON.stringify(data));
-    localStorage.setItem('lastUpdate', new Date().getTime());
-  }
-
-  // Function to get data from localStorage
-  const getDataFromLocalStorage = () => {
-    const savedData = localStorage.getItem('data');
-    const savedLastUpdate = localStorage.getItem('lastUpdate');
-    if (savedData && savedLastUpdate) {
-      return { data: JSON.parse(savedData), lastUpdate: parseInt(savedLastUpdate) };
-    }
-    return null;
-  }
-
-  // Function to fetch data from server
-  const fetchData = async () => {
-    try {
-      const res = await fetch("http://localhost:3001/api/getData");
-      if (res.ok) {
-        const newData = await res.json();
-        setData(newData);
-        setLastUpdate(new Date().getTime()); // Set last update time to current time
-        saveDataToLocalStorage(newData);
-      } else {
-        console.error("Error al obtener los datos del servidor");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    const localData = getDataFromLocalStorage();
-
-    if (localData) {
-      setData(localData.data);
-      setLastUpdate(localData.lastUpdate);
-    }
-
-    const currentTime = new Date().getTime();
-    const updateThreshold = 60000; // 1 minute (adjust to your needs)
-
-    if (!localData || (currentTime - localData.lastUpdate) > updateThreshold) {
-      fetchData(); // Fetch new data if local data is missing or outdated
-    }
-  }, []);
 
 
   // funcion para redireccionar al formulario con los datos a editar
@@ -97,7 +61,7 @@ function ListRegisterTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {pacientes.map((item) => (
             <TableRow
               key={item.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
