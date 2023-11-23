@@ -1,10 +1,12 @@
 import { createContext, useState, } from "react"
+import supabase from "../config/api/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
 
-  const [data, setData] = useState({
+  const [items, setItems] = useState({
     odontologo: '',
     paciente: '',
     contacto: '',
@@ -58,10 +60,6 @@ export const AppProvider = ({ children }) => {
   // estado para alertas
   const [alert, setAlert] = useState(false)
 
-  // estado para editar los datos segun si id
-  const [editId, setEditId] = useState('')
-
-  
   /* manejar el cambio de valores de entrada del formulario */
   const handleInputChange = (event) => {
     event.preventDefault()
@@ -73,7 +71,7 @@ export const AppProvider = ({ children }) => {
     value = event.target.value;
   }
 
-    setData(prevData => (
+    setItems(prevData => (
       { ...prevData, 
         [name]: value 
       }))
@@ -85,45 +83,80 @@ export const AppProvider = ({ children }) => {
   const saveData = async (event) => {
     event.preventDefault()
 
-    // mensaje de cargando
     setLoading(true)
 
-    const newData = {
-      ...data,
-    }
-    setData(newData)
-
- 
-
-    try {
-      const res = await fetch('https://server-generate-pdf-production.up.railway.app/api/savehistoryclinic', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({data: data})
-    })
-
-    if (res.ok) {
-      console.log('datos guardados')
-      setLoading(false)
-    } else {
-      console.log('error al guardar los datos')
+    if (!items.odontologo || !items.paciente || !items.contacto || !items.cedula || !items.acudiente || !items.ocupacion || !items.direccion || !items.ciudad || !items.fechatratamiento || !items.edad || !items.nucleofamiliar || !items.estadogeneral || !items.nacimiento || !items.parto || !items.enfermedadescronicas || !items.alteracionescongenitas || !items.traumatismos || !items.intervencionesquirurgicas || !items.tratamientoprevio || !items.uso || !items.hastaqueedad || !items.observaciones || !items.patronfacial || !items.perfil || !items.asimetria || !items.alturafacial || !items.anchofacial || !items.perfilmaxilar || !items.perfilmandibular || !items.surcolabiomenton || !items.labiosenreposo || !items.perfillabial || !items.respiracion || !items.deglucion || !items.actividadcomisural || !items.actividadlingual || !items.labiosuperior || !items.labioinferior || !items.masetero || !items.mentoniano || !items.habitosdesuccion || !items.plantratamiento || !items.tecnicaaparato || !items.tiempoestimadotratamiento || !items.pronostico) {
       setAlert(true)
       setLoading(false)
+
     }
-      
-    } catch (error) {
-      console.log(error)
+
+    const {data, error} = await supabase.from('pacientes').insert([{
+      odontologo: items.odontologo,
+      paciente: items.paciente,
+      contacto: items.contacto,
+      cedula: items.cedula,
+      acudiente: items.acudiente,
+      ocupacion: items.ocupacion,
+      direccion: items.direccion,
+      ciudad: items.ciudad,
+      fechatratamiento: items.fechatratamiento,
+      edad: items.edad,
+      nucleofamiliar: items.nucleofamiliar,
+      estadogeneral: items.estadogeneral,
+      nacimiento: items.nacimiento,
+      parto: items.parto,
+      enfermedadescronicas: items.enfermedadescronicas,
+      alteracionescongenitas: items.alteracionescongenitas,
+      traumatismos: items.traumatismos,
+      intervencionesquirurgicas: items.intervencionesquirurgicas,
+      tratamientoprevio: items.tratamientoprevio,
+      uso: items.uso,
+      hastaqueedad: items.hastaqueedad,
+      observaciones: items.observaciones,
+      patronfacial: items.patronfacial,
+      perfil: items.perfil,
+      asimetria: items.asimetria,
+      alturafacial: items.alturafacial,
+      anchofacial: items.anchofacial,
+      perfilmaxilar: items.perfilmaxilar,
+      perfilmandibular: items.perfilmandibular,
+      surcolabiomenton: items.surcolabiomenton,
+      labiosenreposo: items.labiosenreposo,
+      perfillabial: items.perfillabial,
+      respiracion: items.respiracion,
+      deglucion: items.deglucion,
+      actividadcomisural: items.actividadcomisural,
+      actividadlingual: items.actividadlingual,
+      labiosuperior: items.labiosuperior,
+      labioinferior: items.labioinferior,
+      masetero: items.masetero,
+      mentoniano: items.mentoniano,
+      habitosdesuccion: items.habitosdesuccion,
+      plantratamiento: items.plantratamiento,
+      tecnicaaparato: items.tecnicaaparato,
+      tiempoestimadotratamiento: items.tiempoestimadotratamiento,
+      pronostico: items.pronostico,
+    }])
+
+    if (error) {
+      console.log(error);
+      setLoading(false)
       setAlert(true)
+    }
+
+    if(data) {
       setLoading(false)
     }
-    }
+
+  }
+
+
 
     // clear form
 
     const clearForm = () => {
-      setData({
+      setItems({
         odontologo: '',
         paciente: '',
         contacto: '',
@@ -180,16 +213,16 @@ export const AppProvider = ({ children }) => {
 
 
     const newData = {
-      ...data,
+      ...items,
     }
-    setData(newData)
+    setItems(newData)
 
       const res = await fetch('https://server-generate-pdf-production.up.railway.app/api/generatehistoryclinic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(items)
       })
       if (res.ok) {
         // mostrar mensaje de cargando
@@ -212,19 +245,13 @@ export const AppProvider = ({ children }) => {
       }
     }
 
-    // funcionalidad para editar los datos
-     const editData = (selectId) => {
-      setEditId(selectId)
-     }
-
   const contextValue = {
-    data,
+    items,
     handleInputChange,
     saveData,
     loading,
     downloadPdf,
     alert,
-    setEditId,
     clearForm,
     
   }

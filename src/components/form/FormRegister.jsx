@@ -16,50 +16,7 @@ import { useEffect } from 'react';
 
 export default function FormRegister() {
 
-  const { data, handleInputChange, saveData, loading, alert, clearForm} = useContext(AppContext)
-
-  let { id } = useParams(); // obtiene la ID de la url
-
-  const [registerEdit, setRegisterEdit] = useState(null)
-
-  useEffect(() => {
-    // realizar una solicitud al servidor para obtener el registro con la ID
-    const getRegisterEdit = async () => {
-      try {
-        const res = await fetch(`http://localhost:3001/api/getData/${id}`)
-        if (res.ok) {
-          const data = await res.json()
-          setRegisterEdit(data)
-        } else {
-          console.error('Error al obtener los datos del servidor')
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }, [id])
-
-  const  handleSubmitUpdate = async (e) => {
-    e.preventDefault();
-
-    // realizar una solicitud al servidor para actualizar el registro con la ID
-    if(!registerEdit) {
-      fetch(`http://localhost:3001/api/updateData/${id}`,{
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({data: registerEdit}),
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        console.log('Registro actualizado')
-      })
-      .catch(error => console.log(error))
-      } 
-    }
-    
+  const { items, handleInputChange, saveData, loading, alert, clearForm} = useContext(AppContext)
 
   return (
     <>
@@ -86,7 +43,7 @@ export default function FormRegister() {
           id="demo-simple-select-filled"
           name='odontologo'
           onChange={handleInputChange}
-          value={data.odontologo}
+          value={items.odontologo}
           
           
         >
@@ -102,7 +59,7 @@ export default function FormRegister() {
         variant="filled"
         name='paciente'
         onChange={handleInputChange}
-        value={data.paciente}
+        value={items.paciente}
         
       />
 
@@ -112,7 +69,7 @@ export default function FormRegister() {
         variant="filled"
         name='contacto'
         onChange={handleInputChange}
-        value={data.contacto}
+        value={items.contacto}
         type='number'
         
       />
@@ -123,7 +80,7 @@ export default function FormRegister() {
         variant="filled"
         name='cedula'
         onChange={handleInputChange}
-        value={data.cedula}
+        value={items.cedula}
         type='number'
       />
 
@@ -133,7 +90,7 @@ export default function FormRegister() {
         variant="filled"
         name='acudiente'
         onChange={handleInputChange}
-        value={data.acudiente}
+        value={items.acudiente}
         
       />
 
@@ -143,7 +100,7 @@ export default function FormRegister() {
         variant="filled"
         name='ocupacion'
         onChange={handleInputChange}
-        value={data.ocupacion}
+        value={items.ocupacion}
       />
 
       <TextField 
@@ -152,7 +109,7 @@ export default function FormRegister() {
         variant="filled"
         name='direccion'
         onChange={handleInputChange}
-        value={data.direccion}
+        value={items.direccion}
         
       />
       <TextField 
@@ -161,7 +118,7 @@ export default function FormRegister() {
         variant="filled"
         name='ciudad'
         onChange={handleInputChange}
-        value={data.ciudad}
+        value={items.ciudad}
         
       />
       <div className='flex  flex-row gap-4'>
@@ -179,7 +136,7 @@ export default function FormRegister() {
           variant="filled"
           className='w-full'
           onChange={handleInputChange}
-          value={data.fechatratamiento}
+          value={items.fechatratamiento}
           
         />
 
@@ -196,7 +153,7 @@ export default function FormRegister() {
           className='w-full'
           name='edad'
           onChange={handleInputChange}
-          value={data.edad}
+          value={items.edad}
           
         />
         </div>
@@ -209,7 +166,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='nucleofamiliar'
               onChange={handleInputChange}
-              value={data.nucleofamiliar}
+              value={items.nucleofamiliar}
               
               
             >
@@ -227,7 +184,7 @@ export default function FormRegister() {
         variant="filled"
         name='estadogeneral'
         onChange={handleInputChange}
-        value={data.estadogeneral}
+        value={items.estadogeneral}
          
       />
 
@@ -248,7 +205,7 @@ export default function FormRegister() {
           className='w-80'
           name='nacimiento'
           onChange={handleInputChange}
-          value={data.nacimiento}
+          value={items.nacimiento}
         />
 
         </div>
@@ -260,7 +217,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='parto'
               onChange={handleInputChange}
-              value={data.parto}
+              value={items.parto}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -276,7 +233,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='enfermedadescronicas'
               onChange={handleInputChange}
-              value={data.enfermedadescronicas}
+              value={items.enfermedadescronicas}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -292,7 +249,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='alteracionescongenitas'
               onChange={handleInputChange}
-              value={data.alteracionescongenitas}
+              value={items.alteracionescongenitas}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -308,7 +265,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='traumatismos'
               onChange={handleInputChange}
-              value={data.traumatismos}
+              value={items.traumatismos}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -324,7 +281,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='intervencionesquirurgicas'
               onChange={handleInputChange}
-              value={data.intervencionesquirurgicas}
+              value={items.intervencionesquirurgicas}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -340,7 +297,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='tratamientoprevio'
               onChange={handleInputChange}
-              value={data.tratamientoprevio}
+              value={items.tratamientoprevio}
             >
               <MenuItem value="SI">SI</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
@@ -356,7 +313,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='uso'
               onChange={handleInputChange}
-              value={data.uso}
+              value={items.uso}
             >
               <MenuItem value="chupete">chupete</MenuItem>
               <MenuItem value="mamadera">mamadera</MenuItem>
@@ -378,7 +335,7 @@ export default function FormRegister() {
           variant="filled"
           className='w-80 '
           onChange={handleInputChange}
-          value={data.hastaqueedad}
+          value={items.hastaqueedad}
         />
         </div>
       </div>
@@ -392,7 +349,7 @@ export default function FormRegister() {
           rows={4}
           name='observaciones'
           onChange={handleInputChange}
-          value={data.observaciones}
+          value={items.observaciones}
 
       />
 
@@ -409,7 +366,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='patronfacial'
               onChange={handleInputChange}
-              value={data.patronfacial}
+              value={items.patronfacial}
             >
               <MenuItem value="Mesofacial">Mesofacial</MenuItem>
               <MenuItem value="Dólico facial">Dólico facial</MenuItem>
@@ -428,7 +385,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='perfil'
               onChange={handleInputChange}
-              value={data.perfil}
+              value={items.perfil}
             >
               <MenuItem value="Recto">Recto</MenuItem>
               <MenuItem value="Cóncavo">Cóncavo</MenuItem>
@@ -445,7 +402,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='asimetria'
               onChange={handleInputChange}
-              value={data.asimetria}
+              value={items.asimetria}
             >
               <MenuItem value="Mand. Derecha">Mand. Derecha</MenuItem>
               <MenuItem value="Mand. Izquierda">Mand. Izquierda</MenuItem>
@@ -463,7 +420,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='alturafacial'
               onChange={handleInputChange}
-              value={data.alturafacial}
+              value={items.alturafacial}
             >
               <MenuItem value="Equilibradas">Equilibrada</MenuItem>
               <MenuItem value="Larga">Larga</MenuItem>
@@ -480,7 +437,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='anchofacial'
               onChange={handleInputChange}
-              value={data.anchofacial}
+              value={items.anchofacial}
             >
               <MenuItem value="Equilibrada">Equilibrada</MenuItem>
               <MenuItem value="Estrecho">Estrecho</MenuItem>
@@ -497,7 +454,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='perfilmaxilar'
               onChange={handleInputChange}
-              value={data.perfilmaxilar}
+              value={items.perfilmaxilar}
             >
               <MenuItem value="Ortognático">Ortognático</MenuItem>
               <MenuItem value="Prognático">Prognático</MenuItem>
@@ -515,7 +472,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='perfilmandibular'
               onChange={handleInputChange}
-              value={data.perfilmandibular}
+              value={items.perfilmandibular}
             >
               <MenuItem value="Ortognático">Ortognático</MenuItem>
               <MenuItem value="Prognático">Prognático</MenuItem>
@@ -532,7 +489,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='surcolabiomenton'
               onChange={handleInputChange}
-              value={data.surcolabiomenton}
+              value={items.surcolabiomenton}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Marcado">Marcado</MenuItem>
@@ -549,7 +506,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='labiosenreposo'
               onChange={handleInputChange}
-              value={data.labiosenreposo}
+              value={items.labiosenreposo}
             >
               <MenuItem value="Compotentes">Compotentes</MenuItem>
               <MenuItem value="Incompetentes">Incompetentes</MenuItem>
@@ -566,7 +523,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='perfillabial'
               onChange={handleInputChange}
-              value={data.perfillabial}
+              value={items.perfillabial}
             >
               <MenuItem value="Protrusivo Sup">Protrusivo Sup</MenuItem>
               <MenuItem value="Protrusivo Inf">Protrusivo Inf</MenuItem>
@@ -594,7 +551,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='respiracion'
               onChange={handleInputChange}
-              value={data.respiracion}
+              value={items.respiracion}
             >
               <MenuItem value="Bucal">Bucal</MenuItem>
               <MenuItem value="Nasal">Nasal</MenuItem>
@@ -613,7 +570,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='actividadcomisural'
               onChange={handleInputChange}
-              value={data.actividadcomisural}
+              value={items.actividadcomisural}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Contraccion">Contraccion</MenuItem>
@@ -630,7 +587,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='actividadlingual'
               onChange={handleInputChange}
-              value={data.actividadlingual}
+              value={items.actividadlingual}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Interp. Anterior">Interp. Anterior</MenuItem>
@@ -647,7 +604,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='labiosuperior'
               onChange={handleInputChange}
-              value={data.labiosuperior}
+              value={items.labiosuperior}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
@@ -665,7 +622,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='labioinferior'
               onChange={handleInputChange}
-              value={data.labioinferior}
+              value={items.labioinferior}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
@@ -682,7 +639,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='masetero'
               onChange={handleInputChange}
-              value={data.masetero}
+              value={items.masetero}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
@@ -699,7 +656,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='mentoniano'
               onChange={handleInputChange}
-              value={data.mentoniano}
+              value={items.mentoniano}
             >
               <MenuItem value="Normal">Normal</MenuItem>
               <MenuItem value="Hipoactivo">Hipoactivo</MenuItem>
@@ -716,7 +673,7 @@ export default function FormRegister() {
               id="demo-simple-select-filled"
               name='habitosdesuccion'
               onChange={handleInputChange}
-              value={data.habitosdesuccion}
+              value={items.habitosdesuccion}
             >
               <MenuItem value="Dedos">Dedos</MenuItem>
               <MenuItem value="Lengua">Lengua</MenuItem>
@@ -736,7 +693,7 @@ export default function FormRegister() {
           rows={4}
           name='plantratamiento'
           onChange={handleInputChange}
-          value={data.plantratamiento}
+          value={items.plantratamiento}
       />
 
       <TextField
@@ -748,7 +705,7 @@ export default function FormRegister() {
           rows={4}
           name='tecnicaaparato'
           onChange={handleInputChange}
-          value={data.tecnicaaparato}
+          value={items.tecnicaaparato}
       />
        <TextField
           id="filled-textarea"
@@ -759,7 +716,7 @@ export default function FormRegister() {
           rows={4}
           name='tiempoestimadotratamiento'
           onChange={handleInputChange}
-          value={data.tiempoestimadotratamiento}
+          value={items.tiempoestimadotratamiento}
       />
       <TextField
           id="filled-textarea"
@@ -770,7 +727,7 @@ export default function FormRegister() {
           rows={4}
           name='pronostico'
           onChange={handleInputChange}
-          value={data.pronostico}
+          value={items.pronostico}
           
 
       />
