@@ -9,7 +9,7 @@ function home() {
     <>
     <HeaderNav />
 
-    <main className="flex justify-center items-center content-center h-screen md:flex-row sm:flex-col">
+    <main className="flex justify-center items-center content-center h-[70vh] md:flex-row sm:flex-col">
       
        <div className="card w-80 rounded-full h-80 flex flex-col justify-between items-center content-center hover:shadow-xl border border-[#50a1a5]">
           <div className="card-body w-auto h-auto cursor-pointer">
